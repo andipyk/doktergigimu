@@ -169,10 +169,14 @@
                 {@const condition = getCondition(num)}
                 {@const color = conditionColors[condition]}
 
+                <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
                 <g
                     transform="translate({x}, 25)"
                     class={readonly ? '' : 'cursor-pointer'}
                     role={readonly ? undefined : 'button'}
+                    aria-label={readonly
+                        ? undefined
+                        : `Gigi ${num}, ${conditionLabels[condition]}`}
                     tabindex={readonly ? undefined : 0}
                     onclick={() => handleToothClick(num)}
                     onkeydown={(e) => {
@@ -250,10 +254,14 @@
                 {@const condition = getCondition(num)}
                 {@const color = conditionColors[condition]}
 
+                <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
                 <g
                     transform="translate({x}, {230 - h})"
                     class={readonly ? '' : 'cursor-pointer'}
                     role={readonly ? undefined : 'button'}
+                    aria-label={readonly
+                        ? undefined
+                        : `Gigi ${num}, ${conditionLabels[condition]}`}
                     tabindex={readonly ? undefined : 0}
                     onclick={() => handleToothClick(num)}
                     onkeydown={(e) => {

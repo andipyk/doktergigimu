@@ -75,19 +75,19 @@
     let selectedRecordIndex = $state(0);
     let lightboxPhoto = $state<PatientPhoto | null>(null);
 
-    // Photo upload form
+    // Photo upload
+    let selectedPhotos = $state<FileList | null>(null);
     const photoForm = useForm({
-        photos: null as FileList | null,
         type: 'before' as 'before' | 'after' | 'progress' | 'xray',
         description: '',
         taken_at: '',
     });
 
-    const breadcrumbs: BreadcrumbItem[] = [
+    const breadcrumbs: BreadcrumbItem[] = $derived([
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Pasien', href: patientsIndex.url() },
         { title: patient.name },
-    ];
+    ]);
 
     const conditions = [
         { value: 'healthy', label: 'Sehat', color: '#4ade80' },
@@ -158,11 +158,11 @@
     }
 
     function uploadPhotos() {
-        if (!$photoForm.photos) return;
+        if (!selectedPhotos) return;
 
         const formData = new FormData();
-        for (let i = 0; i < $photoForm.photos.length; i++) {
-            formData.append('photos[]', $photoForm.photos[i]);
+        for (let i = 0; i < selectedPhotos.length; i++) {
+            formData.append('photos[]', selectedPhotos[i]);
         }
         formData.append('type', $photoForm.type);
         formData.append('description', $photoForm.description);
@@ -175,6 +175,7 @@
             forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {
+                selectedPhotos = null;
                 $photoForm.reset();
             },
         });
@@ -568,7 +569,7 @@
                                         onchange={(e) => {
                                             const target =
                                                 e.target as HTMLInputElement;
-                                            $photoForm.photos = target.files;
+                                            selectedPhotos = target.files;
                                         }}
                                     />
                                 </div>
@@ -620,7 +621,7 @@
                                     />
                                 </div>
                             </div>
-                            <Button type="submit" disabled={!$photoForm.photos}>
+                            <Button type="submit" disabled={!selectedPhotos}>
                                 Upload
                             </Button>
                         </form>
@@ -697,6 +698,7 @@
                                     </Badge>
                                 </div>
                                 <button
+                                    aria-label="Hapus foto"
                                     class="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-destructive/90 text-white opacity-0 transition-opacity group-hover:opacity-100"
                                     onclick={() => deletePhoto(photo.id)}
                                 >
@@ -757,6 +759,7 @@
                                 class="max-h-[85vh] rounded-lg object-contain"
                             />
                             <button
+                                aria-label="Tutup foto"
                                 class="absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-background shadow-md"
                                 onclick={() => (lightboxPhoto = null)}
                             >

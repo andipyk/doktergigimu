@@ -30,22 +30,34 @@
 
     let { patient }: { patient: PatientData } = $props();
 
-    const breadcrumbs: BreadcrumbItem[] = [
+    const breadcrumbs: BreadcrumbItem[] = $derived([
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Pasien', href: patientsIndex.url() },
         { title: patient.name, href: show.url(patient.id) },
         { title: 'Edit' },
-    ];
+    ]);
 
     const form = useForm({
-        name: patient.name,
-        phone: patient.phone ?? '',
-        email: patient.email ?? '',
-        date_of_birth: patient.date_of_birth ?? '',
-        gender: patient.gender,
-        address: patient.address ?? '',
-        drug_allergies: patient.drug_allergies ?? '',
-        medical_notes: patient.medical_notes ?? '',
+        name: '',
+        phone: '',
+        email: '',
+        date_of_birth: '',
+        gender: 'male' as 'male' | 'female',
+        address: '',
+        drug_allergies: '',
+        medical_notes: '',
+    });
+
+    $effect(() => {
+        $form.name = patient.name;
+        $form.phone = patient.phone ?? '';
+        $form.email = patient.email ?? '';
+        $form.date_of_birth = patient.date_of_birth ?? '';
+        $form.gender = patient.gender;
+        $form.address = patient.address ?? '';
+        $form.drug_allergies = patient.drug_allergies ?? '';
+        $form.medical_notes = patient.medical_notes ?? '';
+        $form.defaults();
     });
 
     function submit() {

@@ -46,8 +46,12 @@
         filters?: { search: string };
     } = $props();
 
-    let search = $state(filters.search);
+    let search = $state('');
     let searchTimeout: ReturnType<typeof setTimeout>;
+
+    $effect(() => {
+        search = filters.search;
+    });
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
