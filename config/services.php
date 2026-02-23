@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'gowa' => [
+        'base_url' => env('GOWA_BASE_URL'),
+        'user' => env('GOWA_BASIC_USER'),
+        'pass' => env('GOWA_BASIC_PASS'),
+        'device_id' => env('GOWA_DEVICE_ID'),
+    ],
+
+
 ];
