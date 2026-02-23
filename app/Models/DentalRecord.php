@@ -5,31 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Appointment extends Model
+class DentalRecord extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'patient_id',
-        'patient_name',
-        'patient_phone',
         'doctor_id',
-        'scheduled_at',
-        'duration_minutes',
-        'treatment',
-        'status',
-        'amount',
+        'examined_at',
         'notes',
     ];
 
     protected function casts(): array
     {
         return [
-            'scheduled_at' => 'datetime',
-            'amount' => 'decimal:2',
-            'duration_minutes' => 'integer',
+            'examined_at' => 'datetime',
         ];
+    }
+
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class);
     }
 
     public function doctor(): BelongsTo
@@ -37,8 +35,8 @@ class Appointment extends Model
         return $this->belongsTo(User::class, 'doctor_id');
     }
 
-    public function patient(): BelongsTo
+    public function toothConditions(): HasMany
     {
-        return $this->belongsTo(Patient::class);
+        return $this->hasMany(ToothCondition::class);
     }
 }

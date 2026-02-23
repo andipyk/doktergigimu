@@ -3,6 +3,7 @@
     import BookOpen from 'lucide-svelte/icons/book-open';
     import Folder from 'lucide-svelte/icons/folder';
     import LayoutGrid from 'lucide-svelte/icons/layout-grid';
+    import Users from 'lucide-svelte/icons/users';
     import type { Snippet } from 'svelte';
     import AppLogo from '@/components/AppLogo.svelte';
     import NavFooter from '@/components/NavFooter.svelte';
@@ -20,6 +21,7 @@
     import { toUrl } from '@/lib/utils';
     import type { NavItem } from '@/types';
     import { dashboard } from '@/routes';
+    import { index as patientsIndex } from '@/actions/App/Http/Controllers/PatientController';
 
     let {
         children,
@@ -32,6 +34,11 @@
             title: 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: 'Pasien',
+            href: patientsIndex(),
+            icon: Users,
         },
     ];
 
@@ -52,15 +59,19 @@
 <Sidebar collapsible="icon" variant="inset">
     <SidebarHeader>
         <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" asChild>
-                        {#snippet children(props)}
-                            <Link {...props} href={toUrl(dashboard())} class={props.class}>
-                                <AppLogo />
-                            </Link>
-                        {/snippet}
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
+            <SidebarMenuItem>
+                <SidebarMenuButton size="lg" asChild>
+                    {#snippet children(props)}
+                        <Link
+                            {...props}
+                            href={toUrl(dashboard())}
+                            class={props.class}
+                        >
+                            <AppLogo />
+                        </Link>
+                    {/snippet}
+                </SidebarMenuButton>
+            </SidebarMenuItem>
         </SidebarMenu>
     </SidebarHeader>
 
